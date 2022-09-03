@@ -1047,6 +1047,30 @@ bool ImageButton(const sf::Sprite& sprite, const sf::Vector2f& size, const int f
     return ImGui::ImageButton(textureID, ImVec2(size.x, size.y), uv0, uv1, framePadding,
                               toImColor(bgColor), toImColor(tintColor));
 }
+    
+bool ImageButton(const char *str_id, const sf::Sprite& sprite, const sf::Vector2f& size, 
+                 const sf::Color& bgColor, const sf::Color& tintColor) {
+    const sf::Texture* texturePtr = sprite.getTexture();
+    // sprite without texture cannot be drawn
+    if (!texturePtr) {
+        return false;
+    }
+
+    const sf::Texture& texture = *texturePtr;
+    sf::Vector2f textureSize = static_cast<sf::Vector2f>(texture.getSize());
+    const sf::IntRect& textureRect = sprite.getTextureRect();
+    ImVec2 uv0(textureRect.left / textureSize.x, textureRect.top / textureSize.y);
+    ImVec2 uv1((textureRect.left + textureRect.width) / textureSize.x,
+               (textureRect.top + textureRect.height) / textureSize.y);
+  // ImageButton()
+    ImTextureID textureID = convertGLTextureHandleToImTextureID(texture.getNativeHandle());
+    return ImGui::ImageButton(str_id,textureID, ImVec2(size.x, size.y), uv0, uv1,
+                              toImColor(bgColor), toImColor(tintColor));
+}    
+    
+    
+    
+    
 
 /////////////// Draw_list Overloads
 
